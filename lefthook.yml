@@ -1,0 +1,8 @@
+pre-commit:
+  parallel: true
+  jobs:
+    - run: echo "Done!"
+      stage_fixed: true
+
+    - run: exit 1
+      stage_fixed: true
