@@ -1,6 +1,6 @@
 {
   "go.lintFlags": [
-    "--config=${workspaceFolder}/.golangci.yaml"
+    "--config=${workspaceFolder}/.golangci.yml"
   ],
   "go.lintOnSave": "workspace",
   "go.lintTool": "golangci-lint",
