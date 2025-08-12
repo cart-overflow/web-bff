@@ -1,8 +1,13 @@
-pre-commit:
-  parallel: true
+pre-push:
+  piped: true
+  assert_lefthook_installed: true
+
   jobs:
-    - run: echo "Done!"
+    - name: Lint 
+      run: make lint
       stage_fixed: true
 
-    - run: exit 1
-      stage_fixed: true
+commit-msg:
+  jobs:
+    - name: Commit message check
+      run: ./scripts/commit-message-check.sh {0}
