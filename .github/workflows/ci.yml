@@ -37,10 +37,3 @@ jobs:
       
       - name: Test
         run: go test -v -race ./...
-  
-  result:
-    needs: [lint, test]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Notify
-        run: echo "Done!"
