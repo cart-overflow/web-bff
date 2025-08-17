@@ -1,6 +1,6 @@
-name: CI
+name: Check
 
-run-name: CI
+run-name: Check
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
+  check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,17 +23,9 @@ jobs:
         uses: golangci/golangci-lint-action@v8
         with:
           version: v2.1
-  
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version-file: 'go.mod'
-      
       - name: Test
         run: go test -v -race ./...
+      
+      - name: Build
+        run: go build -o /dev/null ./...
