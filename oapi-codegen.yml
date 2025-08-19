@@ -1,0 +1,4 @@
+package: dto
+output: ./internal/dto/types.go
+generate:
+  models: true

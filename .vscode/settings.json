@@ -1,4 +1,6 @@
 {
+  "explorer.sortOrder": "type",
+  "explorer.sortOrderLexicographicOptions": "upper",
   "go.lintFlags": [
     "--config=${workspaceFolder}/.golangci.yml"
   ],
