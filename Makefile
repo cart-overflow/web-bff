@@ -46,7 +46,7 @@ validate-api:
 
 # CI Build discarding artefacts
 check-build:
-	@echo ⏳ Building..."
+	@echo ⏳ "Building..."
 	@go build -o /dev/null ./...
 	@echo "✅ Building complete"
 
