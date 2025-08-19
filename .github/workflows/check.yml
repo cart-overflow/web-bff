@@ -29,7 +29,7 @@ jobs:
           args: --config=./golangci-lint.yml
 
       - name: Test
-        run: go test -v -race ./...
+        run: make test
       
       - name: Build
-        run: go build -o /dev/null ./...
+        run: make check-build
