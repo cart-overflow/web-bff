@@ -17,14 +17,20 @@ test:
 # Format Go code using golangci-lint
 fmt:
 	@echo "🔧 Formatting Go code..."
-	@golangci-lint fmt -c ./golangci-lint.yml
+	@golangci-lint fmt
 	@echo "✅ Code formatting complete"
 
 # Run linter checks using gloangci-lint
 lint:
-	@echo "🔍 Running linter checks..."
-	@golangci-lint run -c ./golangci-lint.yml
+	@echo "🔨 Running linter checks..."
+	@golangci-lint run
 	@echo "✅ Linting complete"
+
+# Fix linting if possible and format the source code
+fix: 
+	@echo "🛠️ Fix linter issues and formatting the code..."
+	@golangci-lint run --fix
+	@echo "✅ Fixing complete"
 
 # Run Swagger UI server
 swagger:
