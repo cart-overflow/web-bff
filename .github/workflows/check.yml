@@ -24,9 +24,6 @@ jobs:
 
       - name: Lint
         uses: golangci/golangci-lint-action@v8
-        with:
-          version: v2.1
-          args: --config=./golangci-lint.yml
 
       - name: Test
         run: make test
