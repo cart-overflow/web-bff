@@ -1,9 +1,6 @@
 {
   "explorer.sortOrder": "type",
   "explorer.sortOrderLexicographicOptions": "upper",
-  "go.lintFlags": [
-    "--config=${workspaceFolder}/golangci-lint.yml"
-  ],
   "go.lintOnSave": "workspace",
   "go.lintTool": "golangci-lint",
   "go.formatTool": "custom",

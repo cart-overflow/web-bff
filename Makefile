@@ -56,4 +56,4 @@ check-build:
 	@go build -o /dev/null ./...
 	@echo "✅ Building complete"
 
-.PHONY: setup dev test fmt lint swagger gen validate-api check-build
+.PHONY: setup dev test fmt lint fix swagger gen validate-api check-build
