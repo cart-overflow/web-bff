@@ -5,8 +5,10 @@ pre-push:
   jobs:
     - name: Lint 
       run: make lint
-      stage_fixed: true
-
+    
+    - name: Validate OpenAPI
+      run: make validate-api
+    
 commit-msg:
   jobs:
     - name: Commit message check
