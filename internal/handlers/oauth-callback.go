@@ -4,15 +4,15 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/cart-overflow/user/api"
+	"github.com/cart-overflow/user-api/pkg/pb"
 )
 
 type OAuthCallback struct {
-	userClient api.UserServiceClient
+	uc pb.UserServiceClient
 }
 
-func NewOAuthCallback() *OAuthCallback {
-	return &OAuthCallback{}
+func NewOAuthCallback(uc pb.UserServiceClient) *OAuthCallback {
+	return &OAuthCallback{uc}
 }
 
 // TODO: Return html errors instead of json
@@ -21,16 +21,18 @@ func (h *OAuthCallback) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	redirectState := r.URL.Query().Get("state")
 	state, err := r.Cookie("state")
 	if err != nil {
+		// TODO: log error
 		WriteWebError(w, "State parameter is required", http.StatusBadRequest)
 		return
 	}
 
-	res, err := h.userClient.ExchangeCode(r.Context(), &api.ExchangeCodeRequest{
+	res, err := h.uc.ExchangeCode(r.Context(), &pb.ExchangeCodeRequest{
 		Code:          code,
 		RedirectState: redirectState,
 		ClientState:   state.Value,
 	})
 	if err != nil {
+		// TODO: log error
 		WriteInternalServerWebError(w)
 		return
 	}

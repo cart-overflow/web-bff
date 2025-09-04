@@ -3,7 +3,7 @@ module github.com/cart-overflow/web-bff
 go 1.24.1
 
 require (
-	github.com/cart-overflow/user/api v0.0.0-20250820144553-3d33f8e00786
+	github.com/cart-overflow/user-api v0.0.0
 	google.golang.org/grpc v1.75.0
 )
 

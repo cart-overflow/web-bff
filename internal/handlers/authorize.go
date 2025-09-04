@@ -4,27 +4,28 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/cart-overflow/user/api"
+	"github.com/cart-overflow/user-api/pkg/pb"
 )
 
 type Authorize struct {
-	port       string
-	userClient api.UserServiceClient
+	port string
+	uc   pb.UserServiceClient
 }
 
-func NewAuthorize(port string, userClient api.UserServiceClient) *Authorize {
-	return &Authorize{port, userClient}
+func NewAuthorize(port string, uc pb.UserServiceClient) *Authorize {
+	return &Authorize{port, uc}
 }
 
 func (h *Authorize) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	provider := api.OAuthProvider_GOOGLE
+	provider := pb.OAuthProvider_google
 	redirectUrl := "http://localhost:" + h.port + "/oauth-callback"
 
-	resp, err := h.userClient.GetOAuthUrl(r.Context(), &api.GetOAuthUrlRequest{
+	resp, err := h.uc.GetOAuthUrl(r.Context(), &pb.GetOAuthUrlRequest{
 		Provider:    provider,
 		RedirectUrl: redirectUrl,
 	})
 	if err != nil {
+		// TODO: log error
 		WriteInternalServerWebError(w)
 		return
 	}

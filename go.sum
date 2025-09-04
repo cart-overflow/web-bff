@@ -1,5 +1,5 @@
-github.com/cart-overflow/user/api v0.0.0-20250820144553-3d33f8e00786 h1:BVi7E71HzkoTqlF3wvHSRKI/7/3NLkwRf6JKqDtfb2U=
-github.com/cart-overflow/user/api v0.0.0-20250820144553-3d33f8e00786/go.mod h1:r2QnZBdsTcJRjkhHmIFVHBucWpgiAKeBfp+5GahlD7g=
+github.com/cart-overflow/user-api v0.0.0 h1:eQV11DJyx8taTQmUDSnZqO7RG/1+mmFkcpiTbywC3Kw=
+github.com/cart-overflow/user-api v0.0.0/go.mod h1:kTxgw6PAwMkbdtw2tTsTyPek4nXeIEuTyfDNtC/soDw=
 github.com/go-logr/logr v1.4.3 h1:CjnDlHq8ikf6E492q6eKboGOC0T8CDaOvkHCIg8idEI=
 github.com/go-logr/logr v1.4.3/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
 github.com/go-logr/stdr v1.2.2 h1:hSWxHoqTgW2S2qGc0LTAI563KZ5YKYRhT3MFKZMbjag=
