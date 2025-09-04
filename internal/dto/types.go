@@ -5,11 +5,11 @@ package dto
 
 // AppError Represents an application error with standardized fields for consistent error handling and user communication
 type AppError struct {
-	// Code A unique identifier for the error type, useful for programmatic error handling and internationalization
-	Code string `json:"code"`
-
 	// Message A detailed explanation of what went wrong, suitable for display to users
 	Message string `json:"message"`
+
+	// Reason A unique identifier for the error type, useful for programmatic error handling and internationalization
+	Reason string `json:"reason"`
 
 	// Title A brief, human-readable summary of the error
 	Title string `json:"title"`

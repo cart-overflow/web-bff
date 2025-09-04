@@ -1,4 +1,4 @@
-package handlers
+package server
 
 import (
 	"html/template"
@@ -22,7 +22,7 @@ func (h *OAuthCallback) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	state, err := r.Cookie("state")
 	if err != nil {
 		// TODO: log error
-		WriteWebError(w, "State parameter is required", http.StatusBadRequest)
+		WriteErrorWeb(w, "State parameter is required", http.StatusBadRequest)
 		return
 	}
 
@@ -33,7 +33,7 @@ func (h *OAuthCallback) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	})
 	if err != nil {
 		// TODO: log error
-		WriteInternalServerWebError(w)
+		WriteDefaultInternalWeb(w)
 		return
 	}
 

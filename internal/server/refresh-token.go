@@ -1,11 +1,14 @@
-package handlers
+package server
 
 import (
 	"encoding/json"
 	"net/http"
 
 	"github.com/cart-overflow/user-api/pkg/pb"
+	"github.com/cart-overflow/web-bff/internal/core"
 	"github.com/cart-overflow/web-bff/internal/dto"
+	"github.com/cart-overflow/web-bff/internal/rpc"
+	"google.golang.org/grpc/codes"
 )
 
 type RefreshToken struct {
@@ -21,13 +24,12 @@ func (h *RefreshToken) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&body)
 	if err != nil {
 		// TODO: log error
-		WriteAppError(
-			w,
+		WriteAppError(w, core.NewError(
 			"Invalid JSON",
 			"The request body contains invalid JSON format. Please check your input and try again.",
-			"INVALID_JSON",
+			core.JsonDecodingReason,
 			http.StatusBadRequest,
-		)
+		))
 		return
 	}
 
@@ -36,8 +38,7 @@ func (h *RefreshToken) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		&pb.TokenRefreshRequest{RefreshToken: body.RefreshToken},
 	)
 	if err != nil {
-		// TODO: log error
-		// TODO: map errors from user
+		WriteAppError(w, rpc.MapRpcError(err, customizeRefreshTokenRpcErr))
 		return
 	}
 
@@ -50,7 +51,14 @@ func (h *RefreshToken) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	err = json.NewEncoder(w).Encode(resp)
 	if err != nil {
 		// TODO: log error
-		WriteInternalServerError(w)
+		WriteDefaultInternal(w, core.JsonEncodingReason)
 		return
+	}
+}
+
+func customizeRefreshTokenRpcErr(info *rpc.ErrorInfo, err *core.AppError) {
+	if info.Code == codes.Unauthenticated {
+		err.Title = "Invalid Refresh Token"
+		err.Message = "The provided refresh token is not valid. Please log in again to obtain new tokens"
 	}
 }

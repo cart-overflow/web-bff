@@ -1,4 +1,4 @@
-package app
+package rpc
 
 import (
 	"log"
@@ -8,10 +8,11 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-func NewUserServiceClient() pb.UserServiceClient {
-	addr := ":6002"
-	conn, err := grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+func NewUserServiceClient(port string) pb.UserServiceClient {
+	// TODO: secure
+	conn, err := grpc.NewClient(":"+port, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
+		// TODO: logg error
 		log.Fatalf("grpc.NewClient: %v", err)
 	}
 

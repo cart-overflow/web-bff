@@ -54,7 +54,7 @@ paths:
           description: |
             Invalid format of request
 
-            Error codes: 
+            Known error reasons:
             ```
             INVALID_JSON
             ```
@@ -66,10 +66,9 @@ paths:
           description: |
             Invalid or expired refresh token
 
-            Error codes: 
+            Known error reasons:
             ```
             REFRESH_TOKEN_INVALID
-            REFRESH_TOKEN_EXPIRED
             ```
           content:
             application/json:
@@ -86,7 +85,7 @@ components:
       required:
         - title
         - message
-        - code
+        - reason
       properties:
         title:
           type: string
@@ -94,13 +93,13 @@ components:
         message:
           type: string
           description: A detailed explanation of what went wrong, suitable for display to users
-        code:
+        reason:
           type: string
           description: A unique identifier for the error type, useful for programmatic error handling and internationalization
       example:
         title: "Brief title"
         message: "Detailed message"
-        code: "ERROR_CODE"
+        reason: "ERROR_REASON"
     
     RefreshTokenRequest:
       type: object
@@ -134,12 +133,7 @@ components:
   responses:
     DefaultServer:
       description: |
-        Default server error
-
-        Error codes:
-        ```
-        INTERNAL_SERVER_ERROR
-        ```
+        Server error
       content:
         application/json:
           schema:

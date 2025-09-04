@@ -1,4 +1,4 @@
-package handlers
+package server
 
 import (
 	"net/http"
@@ -18,6 +18,7 @@ func NewAuthorize(port string, uc pb.UserServiceClient) *Authorize {
 
 func (h *Authorize) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	provider := pb.OAuthProvider_google
+	// TODO: use real host
 	redirectUrl := "http://localhost:" + h.port + "/oauth-callback"
 
 	resp, err := h.uc.GetOAuthUrl(r.Context(), &pb.GetOAuthUrlRequest{
@@ -26,7 +27,7 @@ func (h *Authorize) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	})
 	if err != nil {
 		// TODO: log error
-		WriteInternalServerWebError(w)
+		WriteDefaultInternalWeb(w)
 		return
 	}
 
