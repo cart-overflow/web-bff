@@ -1,0 +1,154 @@
+openapi: 3.1.0
+
+info:
+  title: Web BFF
+  version: 0.0.0
+  description: Backend-For-Frontend API for CartOverflow web application
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: Vasiliy Kletskin
+    email: kletskin.vasiliy@gmail.com
+
+servers:
+  - url: https://dev.cartoverflow.site
+    description: Development
+  - url: https://prod.cartoverflow.site
+    description: Production
+
+paths:
+  /api/refresh-token:
+    post:
+      operationId: post-refresh-token
+      summary: Refresh access token using refresh token
+      security: []
+      tags: ["Authentication"]
+      description: |
+        Exchange a valid refresh token for new authentication tokens.
+
+        Use this endpoint when your JWT access token expires. The refresh token must be obtained from the initial OAuth flow:
+
+        1. Open `/authorize` in popup window  
+
+        2. Listen for `AUTH_SUCCESS` postMessage with tokens after redirect
+
+        3. Use the refresh token from step 2 to get new tokens here
+
+        Returns a new JWT access token and refresh token pair. Use the new access token in the Authorization header for subsequent API calls.
+      requestBody:
+        required: true
+        description: Refresh token required to obtain new access token
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '200':
+          description: "Tokens refreshed successfully"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshTokenResponse'
+        '400':
+          description: |
+            Invalid format of request
+
+            Known error reasons:
+            ```
+            INVALID_JSON
+            ```
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: |
+            Invalid or expired refresh token
+
+            Known error reasons:
+            ```
+            REFRESH_TOKEN_INVALID
+            ```
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '5XX':
+          $ref: '#/components/responses/DefaultServer'
+
+components:
+  schemas:
+    AppError:
+      type: object
+      description: Represents an application error with standardized fields for consistent error handling and user communication
+      required:
+        - title
+        - message
+        - reason
+      properties:
+        title:
+          type: string
+          description: A brief, human-readable summary of the error
+        message:
+          type: string
+          description: A detailed explanation of what went wrong, suitable for display to users
+        reason:
+          type: string
+          description: A unique identifier for the error type, useful for programmatic error handling and internationalization
+      example:
+        title: "Brief title"
+        message: "Detailed message"
+        reason: "ERROR_REASON"
+    
+    RefreshTokenRequest:
+      type: object
+      description: Request payload for refreshing an expired access token
+      required:
+        - refresh_token
+      properties:
+        refresh_token:
+          type: string
+          description: Valid JWT refresh token obtained from `/authorize` or previous refresh
+      example: 
+        refresh_token: "JWT"
+
+    RefreshTokenResponse:
+      type: object
+      description: Response containing new authentication tokens after successful token refresh
+      required:
+        - access_token
+        - refresh_token
+      properties:
+        access_token:
+          type: string
+          description: "New JWT access token"
+        refresh_token:
+          type: string
+          description: "New JWT refresh token"
+      example:
+        access_token: "JWT"
+        refresh_token: "JWT"
+  
+  responses:
+    DefaultServer:
+      description: |
+        Server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AppError'
+    
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer 
+      bearerFormat: JWT
+      description: |
+        JWT token from OAuth flow.
+        1. Open `/authorize` in popup window
+        2. Listen for `AUTH_SUCCESS` postMessage with tokens after redirect
+        3. Use received JWT in Authorization header
+
+security:
+  - BearerAuth: []
